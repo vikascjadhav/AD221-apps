@@ -20,8 +20,15 @@ public class PaymentRouteBuilder extends RouteBuilder {
 
         // TODO: Add a dead letter queue
 
+        onException(IllegalStateException.class, InvalidEmailException.class)
+            .maximumRedeliveries(1)
+            .handled(true)
+            .to("jms:queue:dead-letter")
+            .markRollbackOnly();
+
         // TODO: Set the route as transacted
         from("file://data/payments?noop=true")
+            .transacted("txnPolicy")
             .routeId("payments-process")
             .log("File: ${header.CamelFileName}")
             .unmarshal(xmlDataFormat)

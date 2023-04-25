@@ -11,4 +11,10 @@ import javax.sql.DataSource;
 public class PaymentsTransactionManager {
     // TODO: Create a transaction manager
 
+    @Bean
+    PlatformTransactionManager txnMgr(DataSource ds) {
+        return new DataSourceTransactionManager(ds);
+
+    }
+
 }
