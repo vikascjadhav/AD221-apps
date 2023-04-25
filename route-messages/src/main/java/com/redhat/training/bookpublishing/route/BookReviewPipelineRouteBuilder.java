@@ -11,6 +11,10 @@ public class BookReviewPipelineRouteBuilder extends RouteBuilder {
     @Override
     public void configure() throws Exception {
         // TODO: Create a route for the book review pipeline
+        from("file://data/manuscripts?noop=true")
+        .routeId("book-review-pipeline")
+        .setHeader(ROUTING_HEADER).method(RoutingSlipStrategy.class)
+        .routingSlip(header(ROUTING_HEADER));
 
     }
 }

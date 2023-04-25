@@ -12,5 +12,11 @@ public class BookPrintingPipelineRouteBuilder extends RouteBuilder {
     public void configure() throws Exception {
         // TODO: Create a route for the printing pipeline
 
+        from("file://data/pipeline/ready-for-printing")
+        .routeId("book-printing-pipeline")
+        .setHeader(ROUTING_HEADER).method(DynamicRoutingStrategy.class)
+       // .dynamicRouter(header(ROUTING_HEADER))
+        .toD(String.format("${header.%s}", ROUTING_HEADER));
+
     }
 }
